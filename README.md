@@ -1,2 +1,2 @@
 # algafood-api
-Api para vendas de alimentos.
+Api de delivery de comida.
