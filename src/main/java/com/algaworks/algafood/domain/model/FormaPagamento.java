@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class FormasPagamento {
+public class FormaPagamento {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +16,10 @@ public class FormasPagamento {
 
 	private String descricao;
 
-	public FormasPagamento() {
+	public FormaPagamento() {
 	}
 
-	public FormasPagamento(Long id, String descricao) {
+	public FormaPagamento(Long id, String descricao) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
@@ -54,7 +54,7 @@ public class FormasPagamento {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FormasPagamento other = (FormasPagamento) obj;
+		FormaPagamento other = (FormaPagamento) obj;
 		return Objects.equals(id, other.id);
 	}
 

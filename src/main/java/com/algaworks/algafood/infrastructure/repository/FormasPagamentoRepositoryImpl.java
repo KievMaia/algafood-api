@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
-import com.algaworks.algafood.domain.model.FormasPagamento;
+import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.repository.FormasPagamentoRepository;
 
 import org.springframework.stereotype.Component;
@@ -18,25 +18,25 @@ public class FormasPagamentoRepositoryImpl implements FormasPagamentoRepository	
 	private EntityManager manager;
 	
 	@Override
-	public List<FormasPagamento> listar() {
-		return manager.createQuery("from FormasPagamento", FormasPagamento.class)
+	public List<FormaPagamento> listar() {
+		return manager.createQuery("from FormasPagamento", FormaPagamento.class)
 				.getResultList();
 	}
 	
 	@Override
-	public FormasPagamento buscar(Long id) {
-		return manager.find(FormasPagamento.class, id);
+	public FormaPagamento buscar(Long id) {
+		return manager.find(FormaPagamento.class, id);
 	}
 	
 	@Transactional
 	@Override
-	public FormasPagamento salvar(FormasPagamento formasPagamento) {
+	public FormaPagamento salvar(FormaPagamento formasPagamento) {
 		return manager.merge(formasPagamento);
 	}
 	
 	@Transactional
 	@Override
-	public void remover(FormasPagamento formasPagamento) {
+	public void remover(FormaPagamento formasPagamento) {
 		formasPagamento = buscar(formasPagamento.getId());
 		manager.remove(formasPagamento);
 	}
