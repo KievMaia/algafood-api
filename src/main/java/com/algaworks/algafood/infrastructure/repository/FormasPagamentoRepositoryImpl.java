@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import com.algaworks.algafood.domain.model.FormaPagamento;
-import com.algaworks.algafood.domain.model.repository.FormasPagamentoRepository;
+import com.algaworks.algafood.domain.repository.FormasPagamentoRepository;
 
 import org.springframework.stereotype.Component;
 

@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import com.algaworks.algafood.domain.model.Estado;
-import com.algaworks.algafood.domain.model.repository.EstadoRepository;
+import com.algaworks.algafood.domain.repository.EstadoRepository;
 
 import org.springframework.stereotype.Component;
 

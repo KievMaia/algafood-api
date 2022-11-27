@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.model.repository.RestauranteRepository;
+import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 import org.springframework.stereotype.Component;
 

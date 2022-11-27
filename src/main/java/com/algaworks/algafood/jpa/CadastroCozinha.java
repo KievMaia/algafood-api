@@ -5,9 +5,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import com.algaworks.algafood.domain.model.Cozinha;
-
 import org.springframework.stereotype.Component;
+
+import com.algaworks.algafood.domain.model.Cozinha;
 
 @Component
 public class CadastroCozinha {
