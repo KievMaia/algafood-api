@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +34,18 @@ public class CidadeController {
 
 	@GetMapping
 	public List<Cidade> listar() {
-		return cidadeRepository.listar();
+		return cidadeRepository.findAll();
 	}
 
 	@GetMapping("/{cidadeId}")
 	public ResponseEntity<Cidade> buscar(@PathVariable Long cidadeId) {
-		Cidade cidade = cidadeRepository.buscar(cidadeId);
+		Optional<Cidade> cidade = cidadeRepository.findById(cidadeId);
 
-		if (Objects.isNull(cidade)) {
+		if (cidade.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 
-		return ResponseEntity.ok(cidade);
+		return ResponseEntity.ok(cidade.get());
 	}
 
 	@PostMapping
@@ -62,14 +62,12 @@ public class CidadeController {
 	@PutMapping("/{cidadeId}")
 	public ResponseEntity<?> atualizar(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
 		try {
-			Cidade cidadeAtual = cidadeRepository.buscar(cidadeId);
+			Optional<Cidade> cidadeAtual = cidadeRepository.findById(cidadeId);
 
-			if (Objects.nonNull(cidadeAtual)) {
-				BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+			if (cidadeAtual.isPresent()) {
+				BeanUtils.copyProperties(cidade, cidadeAtual.get(), "id");
 
-				cidadeAtual = cadastroCidade.salvar(cidadeAtual);
-
-				return ResponseEntity.ok(cidadeAtual);
+				return ResponseEntity.ok(cadastroCidade.salvar(cidadeAtual.get()));
 			}
 
 			return ResponseEntity.notFound().build();
@@ -82,9 +80,10 @@ public class CidadeController {
 	@DeleteMapping("/{cidadeId}")
 	public ResponseEntity<?> remover(@PathVariable Long cidadeId) {
 		try {
-			this.cidadeRepository.remover(cidadeId);
+			this.cadastroCidade.excluir(cidadeId);
 			
 			return ResponseEntity.noContent().build();
+			
 		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
