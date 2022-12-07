@@ -10,5 +10,4 @@ public interface CozinhaRepository extends JpaRepository<Cozinha, Long>{
 
 	List<Cozinha> findByNomeContaining(String nome);
 
-//	List<Cozinha> consultarPorNome(String nome);
 }
