@@ -1,4 +1,4 @@
-package com.algaworks.algafood.domain.services;
+package com.algaworks.algafood.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;

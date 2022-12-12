@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
-import com.algaworks.algafood.domain.services.CadastroCidadeService;
+import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
 @RestController
 @RequestMapping(value = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
