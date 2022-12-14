@@ -25,7 +25,7 @@ public class Cozinha {
 	private Long id;
 
 	@Column(nullable = false)
-	private String nome;
+	private String nome; 
 	
 	@JsonIgnore
 	@OneToMany(mappedBy ="cozinha")

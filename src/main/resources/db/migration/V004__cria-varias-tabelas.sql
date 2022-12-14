@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 create table forma_pagamento (
+=======
+
+  create table forma_pagamento (
+>>>>>>> refs/remotes/origin/master
        id  bigserial not null,
         descricao varchar(60) not null,
         primary key (id)
