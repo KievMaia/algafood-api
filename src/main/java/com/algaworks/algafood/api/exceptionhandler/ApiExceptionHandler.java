@@ -10,6 +10,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -54,6 +56,29 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 		return super.handleTypeMismatch(ex, headers, status, request);
 	}
+	
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+	        HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+	    ProblemType problemType = ProblemType.DADOS_INVALIDOS;
+	    String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
+	    
+	    BindingResult bindingResult = ex.getBindingResult();
+	    
+	    List<Problem.Field> problemFields = bindingResult.getFieldErrors().stream().map(fieldError -> Problem.Field.builder()
+	    		.name(fieldError.getField())
+	    		.userMessage(fieldError.getDefaultMessage())
+	    		.build())
+	    		.collect(Collectors.toList());
+	        
+	    Problem problem = createProblemBuilder(status, problemType, detail)
+	        .userMessage(detail)
+	        .fields(problemFields)
+	        .build();
+	    
+	    return handleExceptionInternal(ex, problem, headers, status, request);
+	}   
 
 	private ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -184,16 +209,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 		if (body == null) {
 			body = Problem.builder()
+					.status(status.value())
 					.timestamp(LocalDateTime.now())
 					.title(status.getReasonPhrase())
-					.status(status.value())
 					.userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
 					.build();
 		} else if (body instanceof String) {
 			body = Problem.builder()
+					.status(status.value())
 					.timestamp(LocalDateTime.now())
 					.title((String) body)
-					.status(status.value())
 					.userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
 					.build();
 		}
@@ -205,9 +230,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 		return Problem.builder()
 				.status(status.value())
+				.timestamp(LocalDateTime.now())
 				.type(problemType.getUri())
 				.title(problemType.getTitle())
-				.timestamp(LocalDateTime.now())
 				.detail(detail);
 	}
 
