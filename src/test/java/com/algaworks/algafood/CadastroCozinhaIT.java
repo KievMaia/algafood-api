@@ -2,6 +2,7 @@ package com.algaworks.algafood;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
 import javax.validation.ConstraintViolationException;
@@ -37,6 +38,8 @@ class CadastroCozinhaIT {
 	
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
+	
+	int numeroInstanciasCozinhas = 0;
 	
 	@BeforeEach
 	public void setUp() {
@@ -108,14 +111,13 @@ class CadastroCozinhaIT {
 	}
 	
 	@Test
-	public void deveConter2Cozinhas_QuandoConsultarCozinhas() {
-		
+	public void deveConterTotaldeInstanciasDeCozinhas_QuandoConsultarCozinhas() {
 		given()
 			.accept(ContentType.JSON)
 		.when()
 			.get()
 		.then()
-			.body("", hasSize(2));
+			.body("", hasSize(numeroInstanciasCozinhas));
 	}
 	
 	@Test
@@ -130,13 +132,38 @@ class CadastroCozinhaIT {
 			.statusCode(HttpStatus.CREATED.value());
 	}
 	
+	@Test
+	public void deveRetornarRespostaEStatusCorretos_QuandoConsultarCozinhaExistente() {
+		given()
+			.pathParam("cozinhaId", 2)
+			.accept(ContentType.JSON)
+		.when()
+			.get("/{cozinhaId}")
+		.then()
+			.statusCode(HttpStatus.OK.value())
+			.body("nome", equalTo("Americana"));
+	}
+	
+	@Test
+	public void deveRetornarRespostaStatus404_QuandoConsultarCozinhaInexistente() {
+		given()
+			.pathParam("cozinhaId", 20)
+			.accept(ContentType.JSON)
+		.when()
+			.get("/{cozinhaId}")
+		.then()
+			.statusCode(HttpStatus.NOT_FOUND.value());
+	}
+	
 	private void prepararDados() {
 		Cozinha cozinha1 = new Cozinha();
 		cozinha1.setNome("Tailandesa");
 		cozinhaRepository.save(cozinha1);
+		numeroInstanciasCozinhas++;
 
 		Cozinha cozinha2 = new Cozinha();
 		cozinha2.setNome("Americana");
 		cozinhaRepository.save(cozinha2);
+		numeroInstanciasCozinhas++;
 	}
 }

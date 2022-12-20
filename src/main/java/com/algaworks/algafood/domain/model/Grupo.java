@@ -11,8 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -27,7 +25,6 @@ public class Grupo {
 	
 	private String nome;
 	
-	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "grupo_permissao",
 			joinColumns = @JoinColumn(name = "grupo_id"),

@@ -17,8 +17,6 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -70,7 +68,6 @@ public class Pedido {
     @JoinColumn(name = "usuario_cliente_id", nullable = false)
     private Usuario cliente;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy ="pedido")
 	private List<ItemPedido> itens = new ArrayList<>();
 }
