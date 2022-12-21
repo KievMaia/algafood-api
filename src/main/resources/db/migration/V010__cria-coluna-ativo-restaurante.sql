@@ -1,0 +1,2 @@
+ALTER TABLE restaurante
+	ADD COLUMN "ativo" BOOLEAN DEFAULT TRUE;

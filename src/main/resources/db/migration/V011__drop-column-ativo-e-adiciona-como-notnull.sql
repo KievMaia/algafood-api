@@ -1,0 +1,5 @@
+ALTER TABLE restaurante
+	DROP COLUMN ativo;
+	
+ALTER TABLE restaurante
+	ADD COLUMN "ativo" BOOLEAN NOT NULL DEFAULT TRUE;
