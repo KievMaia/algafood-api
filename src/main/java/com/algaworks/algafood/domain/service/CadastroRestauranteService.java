@@ -39,6 +39,10 @@ public class CadastroRestauranteService {
 	public void excluir(Long restauranteId) {
 		try {
 			this.restauranteRepository.deleteById(restauranteId);
+			
+			//Garante que todas as transações pendentes sejam aplicadas no 
+			//banco de dados.
+			restauranteRepository.flush();
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new RestauranteNaoEncontradoException(restauranteId);

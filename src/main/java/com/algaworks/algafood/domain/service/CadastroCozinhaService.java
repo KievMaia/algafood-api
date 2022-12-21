@@ -29,6 +29,10 @@ public class CadastroCozinhaService {
 	public void excluir(Long cozinhaId) {
 		try {
 			this.cozinhaRepository.deleteById(cozinhaId);
+			
+			//Garante que todas as transações pendentes sejam aplicadas no 
+			//banco de dados.
+			cozinhaRepository.flush();
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new CozinhaNaoEncontradaException(cozinhaId);

@@ -29,6 +29,10 @@ public class CadastroEstadoService {
 	public void excluir(Long estadoId) {
 		try {
 			this.estadoRepository.deleteById(estadoId);
+			
+			//Garante que todas as transações pendentes sejam aplicadas no 
+			//banco de dados.
+			estadoRepository.flush();
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new EstadoNaoEncontradoException(estadoId);

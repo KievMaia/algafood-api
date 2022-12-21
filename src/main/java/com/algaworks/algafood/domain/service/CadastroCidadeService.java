@@ -39,6 +39,10 @@ public class CadastroCidadeService {
 	public void excluir(Long cidadeId) {
 		try {
 			this.cidadeRepository.deleteById(cidadeId);
+			
+			//Garante que todas as transações pendentes sejam aplicadas no 
+			//banco de dados.
+			cidadeRepository.flush();
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new CidadeNaoEncontradaException(cidadeId);
