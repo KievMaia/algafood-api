@@ -1,5 +1,8 @@
 package com.algaworks.algafood.domain.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -7,10 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
+import com.algaworks.algafood.domain.exception.ProdutoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.FormaPagamento;
+import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
@@ -24,10 +29,10 @@ public class CadastroRestauranteService {
 
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
-	
+
 	@Autowired
 	private CadastroCidadeService cadastroCidade;
-	
+
 	@Autowired
 	private CadastroFormaPagamentoService cadastroFormaPagamentoService;
 
@@ -49,9 +54,9 @@ public class CadastroRestauranteService {
 	public void excluir(Long restauranteId) {
 		try {
 			this.restauranteRepository.deleteById(restauranteId);
-			
-			//Garante que todas as transações pendentes sejam aplicadas no 
-			//banco de dados.
+
+			// Garante que todas as transações pendentes sejam aplicadas no
+			// banco de dados.
 			restauranteRepository.flush();
 
 		} catch (EmptyResultDataAccessException e) {
@@ -61,40 +66,50 @@ public class CadastroRestauranteService {
 			throw new EntidadeEmUsoException(String.format(MSG_RESTAURANTE_EM_USO, restauranteId));
 		}
 	}
-	
+
 	@Transactional
 	public void ativar(Long restauranteId) {
 		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
-		
+
 		restauranteAtual.ativar();
 	}
-	
+
 	@Transactional
 	public void inativar(Long restauranteId) {
 		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
-		
+
 		restauranteAtual.inativar();
 	}
-	
+
 	@Transactional
 	public void desassociarFormaPagamento(Long retauranteId, Long formaPagamentoId) {
 		Restaurante restaurante = buscarOuFalhar(retauranteId);
 		FormaPagamento formaPagamento = cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
-		
+
 		restaurante.removerFormaPagamento(formaPagamento);
- 	}
-	
+	}
+
 	@Transactional
 	public void associarFormaPagamento(Long retauranteId, Long formaPagamentoId) {
 		Restaurante restaurante = buscarOuFalhar(retauranteId);
 		FormaPagamento formaPagamento = cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
-		
+
 		restaurante.adicionarFormaPagamento(formaPagamento);
- 	}
+	}
 
 	public Restaurante buscarOuFalhar(Long restauranteId) {
-		return restauranteRepository.findById(restauranteId).orElseThrow(
-				() -> new RestauranteNaoEncontradoException(restauranteId));
+		return restauranteRepository.findById(restauranteId)
+				.orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
+	}
+
+	public Produto buscarProdutoEspecifico(Long produtoId, List<Produto> produtos) {
+		Optional<Produto> produtoProcurado = produtos.stream().filter(produto -> produto.getId().equals(produtoId)).findFirst();
+		
+		if (produtoProcurado.isEmpty()) {
+			throw new ProdutoNaoEncontradoException(produtoId);
+		}
+		
+		return produtoProcurado.get();
 	}
 
 }
