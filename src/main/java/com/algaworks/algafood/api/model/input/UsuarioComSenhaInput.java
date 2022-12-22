@@ -7,8 +7,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FormaPagamentoInput {
+public class UsuarioComSenhaInput extends UsuarioInput{
 
 	@NotBlank
-	private String descricao;
+    private String senha;
 }

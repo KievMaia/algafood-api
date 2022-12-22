@@ -94,3 +94,9 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('San
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, true, 6);
 
 insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
+
+insert into usuario (nome, email, senha, data_cadastro) values
+('João da Silva', 'joao.ger@algafood.com', '123', CURRENT_TIMESTAMP::timestamptz),
+('Maria Joaquina', 'maria.vnd@algafood.com', '123', CURRENT_TIMESTAMP::timestamptz),
+('José Souza', 'jose.aux@algafood.com', '123', CURRENT_TIMESTAMP::timestamptz),
+('Sebastião Martins', 'sebastiao.cad@algafood.com', '123', CURRENT_TIMESTAMP::timestamptz);
