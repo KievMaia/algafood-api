@@ -27,8 +27,7 @@ import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@ValorZeroIncluiDescricao(valorField = "taxaFrete", 
-descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
@@ -53,9 +52,9 @@ public class Restaurante {
 	private Endereco endereco;
 
 	private Boolean ativo = Boolean.TRUE;
-	
+
 	private Boolean aberto = Boolean.FALSE;
-	
+
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
 	private OffsetDateTime dataCadastro;
@@ -65,36 +64,50 @@ public class Restaurante {
 	private OffsetDateTime dataAtualizacao;
 
 	@ManyToMany
-	@JoinTable(name = "restaurante_forma_pagamento",
-			joinColumns = @JoinColumn(name = "restaurante_id"),
-			inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
+	@JoinTable(name = "restaurante_forma_pagamento", 
+				joinColumns = @JoinColumn(name = "restaurante_id"), 
+				inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
 	private Set<FormaPagamento> formasPagamento = new HashSet<>();
+
+	@ManyToMany
+	@JoinTable(name = "restaurante_usuario_responsavel", 
+				joinColumns = @JoinColumn(name = "restaurante_id"), 
+				inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+	private Set<Usuario> usuarios = new HashSet<>();
 
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>();
-	
+
 	public void ativar() {
 		setAtivo(true);
 	}
-	
+
 	public void abrir() {
 		setAberto(true);
 	}
-	
+
 	public void inativar() {
 		setAtivo(false);
 	}
-	
+
 	public void fechar() {
 		setAberto(false);
 	}
-	
+
 	public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
 		return getFormasPagamento().remove(formaPagamento);
 	}
 
 	public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
 		return getFormasPagamento().add(formaPagamento);
+	}
+
+	public boolean removerResponsavel(Usuario usuario) {
+		return this.getUsuarios().remove(usuario);
+	}
+
+	public boolean adicionarResponsavel(Usuario usuario) {
+		return this.getUsuarios().add(usuario);
 	}
 
 }
