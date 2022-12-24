@@ -10,6 +10,8 @@ ALTER TABLE restaurante DISABLE TRIGGER ALL;
 ALTER TABLE restaurante_forma_pagamento DISABLE TRIGGER ALL;
 ALTER TABLE usuario DISABLE TRIGGER ALL;
 ALTER TABLE usuario_grupo DISABLE TRIGGER ALL;
+ALTER TABLE pedido DISABLE TRIGGER ALL;
+ALTER TABLE item_pedido DISABLE TRIGGER ALL;
 
 delete from cidade;
 delete from cozinha;
@@ -23,6 +25,8 @@ delete from restaurante;
 delete from restaurante_forma_pagamento;
 delete from usuario;
 delete from usuario_grupo;
+delete from pedido;
+delete from item_pedido;
 
 ALTER TABLE cidade ENABLE TRIGGER ALL;
 ALTER TABLE cozinha ENABLE TRIGGER ALL;
@@ -36,6 +40,8 @@ ALTER TABLE restaurante ENABLE TRIGGER ALL;
 ALTER TABLE restaurante_forma_pagamento ENABLE TRIGGER ALL;
 ALTER TABLE usuario ENABLE TRIGGER ALL;
 ALTER TABLE usuario_grupo ENABLE TRIGGER ALL;
+ALTER TABLE pedido ENABLE TRIGGER ALL;
+ALTER TABLE item_pedido ENABLE TRIGGER ALL;
 
 ALTER SEQUENCE cidade_id_seq RESTART WITH 1;
 ALTER SEQUENCE cozinha_id_seq RESTART WITH 1;
@@ -46,6 +52,7 @@ ALTER SEQUENCE permissao_id_seq RESTART WITH 1;
 ALTER SEQUENCE produto_id_seq RESTART WITH 1;
 ALTER SEQUENCE restaurante_id_seq RESTART WITH 1;
 ALTER SEQUENCE usuario_id_seq RESTART WITH 1;
+ALTER SEQUENCE pedido_id_seq RESTART WITH 1;
 
 insert into cozinha (nome) values ('Tailandesa');
 insert into cozinha (nome) values ('Indiana');
@@ -110,3 +117,25 @@ delete from restaurante_usuario_responsavel;
 insert into usuario (nome, email, senha, data_cadastro) values ('Manoel Lima', 'manoel.loja@gmail.com', '123', CURRENT_TIMESTAMP::timestamptz);
 
 insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5);
+
+insert into pedido (restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, 
+                    endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
+	                status, data_criacao, subtotal, taxa_frete, valor_total)
+values (1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil',
+        'CRIADO', CURRENT_TIMESTAMP::timestamptz, 298.90, 10, 308.90);
+
+insert into item_pedido (pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (1, 1, 1, 78.9, 78.9, null);
+
+insert into item_pedido (pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (1, 2, 2, 110, 220, 'Menos picante, por favor');
+
+
+insert into pedido (restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep, 
+                    endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
+	                status, data_criacao, subtotal, taxa_frete, valor_total)
+values (4, 1, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro',
+        'CRIADO', CURRENT_TIMESTAMP::timestamptz, 79, 0, 79);
+
+insert into item_pedido (pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (2, 6, 1, 79, 79, 'Ao ponto');
