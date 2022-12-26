@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
+import com.algaworks.algafood.domain.exception.FormaPagamentoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.ProdutoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -138,6 +139,19 @@ public class CadastroRestauranteService {
 		}
 		
 		return produtoProcurado.get();
+	}
+	
+	public FormaPagamento buscarFormaPagamentoEspecifico(Long formaPagamentoId, Restaurante restaurante) {
+		cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
+		
+		Optional<FormaPagamento> formaPagamentoProcurada = restaurante.getFormasPagamento().stream()
+				.filter(formaPagamento -> formaPagamento.getId().equals(formaPagamentoId)).findFirst();
+		
+		if (formaPagamentoProcurada.isEmpty()) {
+			throw new FormaPagamentoNaoEncontradoException(formaPagamentoId, restaurante.getId());
+		}
+		
+		return formaPagamentoProcurada.get();
 	}
 
 	@Transactional

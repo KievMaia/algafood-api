@@ -34,6 +34,8 @@ public class CadastroFormaPagamentoService {
 	public void excluir(Long formaPagamentoId) {
 		try {
 			formaPagamentoRepository.deleteById(formaPagamentoId);
+			//Para sincronizar o que está pendente, senão o JPA commita as alterações a hora que ele quiser, e pode não efetuar as alterações no banco e causar erro no
+			//caminho.
 			formaPagamentoRepository.flush();
 			
 		} catch (EmptyResultDataAccessException  e) {
