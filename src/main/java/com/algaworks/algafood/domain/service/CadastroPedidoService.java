@@ -77,8 +77,7 @@ public class CadastroPedidoService {
 		}
 		return valorTotal;
 	}
-	
-	
+
 	//Outra forma de implementação.
 	
 //	@Transactional
