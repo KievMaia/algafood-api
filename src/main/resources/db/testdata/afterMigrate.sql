@@ -53,6 +53,7 @@ ALTER SEQUENCE produto_id_seq RESTART WITH 1;
 ALTER SEQUENCE restaurante_id_seq RESTART WITH 1;
 ALTER SEQUENCE usuario_id_seq RESTART WITH 1;
 ALTER SEQUENCE pedido_id_seq RESTART WITH 1;
+ALTER SEQUENCE item_pedido_id_seq RESTART WITH 1;
 
 insert into cozinha (nome) values ('Tailandesa');
 insert into cozinha (nome) values ('Indiana');

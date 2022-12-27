@@ -16,4 +16,8 @@ public class PedidoInputDisassembler {
 	public Pedido toDomainObject(PedidoInput pedidoInput) {
 		return modelMapper.map(pedidoInput, Pedido.class);
 	}
+	
+	public void copyToDomainObject(PedidoInput pedidoInput, Pedido pedido) {
+        modelMapper.map(pedidoInput, pedido);
+    }   
 }
