@@ -19,7 +19,8 @@ import com.algaworks.algafood.api.assembler.PedidoResumoModelAssembler;
 import com.algaworks.algafood.api.model.PedidoModel;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.model.input.PedidoInput;
-import com.algaworks.algafood.domain.repository.PedidoRespository;
+import com.algaworks.algafood.domain.model.Pedido;
+import com.algaworks.algafood.domain.repository.PedidoRepository;
 import com.algaworks.algafood.domain.service.CadastroPedidoService;
 
 @RestController
@@ -33,15 +34,41 @@ public class PedidoController {
 	private PedidoResumoModelAssembler pedidoResumoModelAssembler ;
 	
 	@Autowired
-	private PedidoRespository pedidoRespository;
+	private PedidoRepository pedidoRepository;
 	
 	@Autowired
 	private CadastroPedidoService cadastroPedidoService;
 
 	@GetMapping
 	public List<PedidoResumoModel> listar() {
-		return pedidoResumoModelAssembler.toCollectionModel(pedidoRespository.findAll());
+		List<Pedido> todosPedidos = pedidoRepository.findAll();
+		
+		return pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
 	}
+	
+//	@GetMapping
+//	public MappingJacksonValue listar(@RequestParam(required = false) String campos) {
+//		
+//		MappingJacksonValue pedidosWrapper = new MappingJacksonValue(
+//				pedidoResumoModelAssembler.toCollectionModel(
+//						pedidoRespository.findAll()));
+//		
+//		SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+//		filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.serializeAll());
+//		
+//		if (StringUtils.isNotBlank(campos)) {
+//			filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.filterOutAllExcept(campos.split(",")));
+//		}
+//		
+//		pedidosWrapper.setFilters(filterProvider);
+//		
+//		return pedidosWrapper;
+//	}
+	
+//	@GetMapping
+//	public List<PedidoResumoModel> listar() {
+//		return pedidoResumoModelAssembler.toCollectionModel(pedidoRespository.findAll());
+//	}
 	
 	@GetMapping("/{codigoPedido}")
 	public PedidoModel buscar(@PathVariable String codigoPedido) {
