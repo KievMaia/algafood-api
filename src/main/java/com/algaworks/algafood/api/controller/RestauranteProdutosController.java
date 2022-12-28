@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,7 @@ import com.algaworks.algafood.api.model.ProdutoModel;
 import com.algaworks.algafood.api.model.input.ProdutoInput;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.repository.ProdutoRepository;
 import com.algaworks.algafood.domain.service.CadastroProdutoService;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 
@@ -36,6 +38,9 @@ public class RestauranteProdutosController {
 	
 	@Autowired
 	private ProdutoModelAssembler produtoModelAssembler;
+	
+	@Autowired
+	private ProdutoRepository produtoRepository;
 	
 	@Autowired
 	private ProdutoInputDisassembler produtoInputDisassembler;
@@ -61,10 +66,14 @@ public class RestauranteProdutosController {
 //	}
 	
 	@GetMapping
-	public List<ProdutoModel> listar(@PathVariable Long restauranteId) {
+	public List<ProdutoModel> listar(@PathVariable Long restauranteId, @RequestParam(required = false) boolean incluirInativos) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 		
-		return produtoModelAssembler.toCollectionModel(restaurante.getProdutos());
+		if (incluirInativos) {
+			return produtoModelAssembler.toCollectionModel(produtoRepository.findTodosByRestaurante(restaurante));
+		}
+		
+		return produtoModelAssembler.toCollectionModel(produtoRepository.findAtivosByRestaurante(restaurante));
 	}
 	
 	@GetMapping("/{produtoId}")
