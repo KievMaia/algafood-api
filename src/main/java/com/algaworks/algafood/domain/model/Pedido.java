@@ -56,7 +56,6 @@ public class Pedido {
 	private StatusPedido status = StatusPedido.CRIADO;
 
 	@CreationTimestamp
-	@Column(nullable = false, columnDefinition = "datetime")
 	private OffsetDateTime dataCriacao;
 	
 	@Column(columnDefinition = "datetime")
