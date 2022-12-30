@@ -10,5 +10,5 @@ public interface VendaQueryService {
 	
 //	List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro);
 	
-	List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro);
+	List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro, String timeOffset);
 }

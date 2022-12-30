@@ -28,14 +28,14 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 	private Environment environment;
 
 	@Override
-	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro) {
+	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro, String timeOffset) {
 		String DB_URL = environment.getProperty("spring.datasource.url");
 		String USER = environment.getProperty("spring.datasource.username");
 		String PASS = environment.getProperty("spring.datasource.password");
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("SELECT DATE(timezone('America/Sao_Paulo', p.data_criacao)) AS data_criacao, ");
+		sql.append("SELECT DATE(timezone('"+ timeOffset +"', p.data_criacao)) AS data_criacao, ");
 		sql.append("COUNT(p.id) AS total_vendas, ");
 		sql.append("SUM(p.valor_total) AS total_faturado ");
 		sql.append("FROM pedido p ");
@@ -62,7 +62,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 				sql.append("AND data_criacao <= '" + filtro.getDataCriacaoFim() + "' ");
 			}
 			
-			sql.append("GROUP BY DATE(timezone('America/Sao_Paulo', p.data_criacao))");
+			sql.append("GROUP BY DATE(timezone('"+ timeOffset +"', p.data_criacao))");
 			
 			ps = conn.prepareStatement(sql.toString());
 			ResultSet rs = ps.executeQuery();
