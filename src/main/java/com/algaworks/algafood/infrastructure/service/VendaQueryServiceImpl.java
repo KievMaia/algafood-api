@@ -15,6 +15,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
+import com.algaworks.algafood.domain.model.StatusPedido;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 import com.algaworks.algafood.domain.service.VendaQueryService;
 
@@ -38,6 +39,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 		sql.append("COUNT(p.id) AS total_vendas, ");
 		sql.append("SUM(p.valor_total) AS total_faturado ");
 		sql.append("FROM pedido p ");
+		sql.append("WHERE status in ('" +StatusPedido.CONFIRMADO + "','" + StatusPedido.ENTREGUE + "')");
 
 		List<VendaDiaria> listaVendaDiaria = new ArrayList<>();
 		
@@ -46,10 +48,10 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 				) 
 		{
 			if (Objects.nonNull(filtro.getRestauranteId())) {
-				sql.append("WHERE restaurante_id = " + filtro.getRestauranteId() + " ");
+				sql.append("AND restaurante_id = " + filtro.getRestauranteId() + " ");
 				
 			} else {
-				sql.append("WHERE 1=1 ");
+				sql.append("AND 1=1 ");
 			}
 			
 			if (Objects.nonNull(filtro.getDataCriacaoInicio())) {
