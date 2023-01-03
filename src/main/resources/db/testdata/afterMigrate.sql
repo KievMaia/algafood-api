@@ -27,6 +27,7 @@ delete from usuario;
 delete from usuario_grupo;
 delete from pedido;
 delete from item_pedido;
+delete from foto_produto;
 
 ALTER TABLE cidade ENABLE TRIGGER ALL;
 ALTER TABLE cozinha ENABLE TRIGGER ALL;
