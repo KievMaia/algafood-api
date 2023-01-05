@@ -103,6 +103,36 @@ public class RestauranteProdutoFotoController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	//Implementação para recuperar do S3.
+//	@GetMapping
+//	private ResponseEntity<?> servirFotoS3(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
+//			@RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
+//		try {
+//		
+//		FotoProduto fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
+//		
+//		MediaType mediaTypeFoto = MediaType.parseMediaType(fotoProduto.getContentType());
+//		List<MediaType> mediaTypesAceitas = MediaType.parseMediaTypes(acceptHeader);
+//		
+//		verificarCompatibilidadeMediaType(mediaTypeFoto, mediaTypesAceitas);
+//		
+//		FotoRecuperada fotoRecuperada = fotoStorageService.recuperarS3(fotoProduto.getNomeArquivo());
+//		
+//		if (fotoRecuperada.temUrl()) {
+//			return ResponseEntity.status(HttpStatus.FOUND)
+//					.header(HttpHeaders.LOCATION, fotoRecuperada.getUrl())
+//					.build();
+//		} else {
+//			return ResponseEntity.ok()
+//					.contentType(mediaTypeFoto)
+//					.body(new InputStreamResource(fotoRecuperada.getInputStream()));
+//		}
+//		
+//		} catch (EntidadeNaoEncontradaException e) {
+//			return ResponseEntity.notFound().build();
+//		}
+//	}
 
 	private void verificarCompatibilidadeMediaType(MediaType mediaTypeFoto, List<MediaType> mediaTypesAceitas) throws HttpMediaTypeNotAcceptableException {
 		boolean compativel = mediaTypesAceitas.stream()
