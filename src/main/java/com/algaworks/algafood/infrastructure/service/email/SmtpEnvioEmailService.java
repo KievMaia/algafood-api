@@ -1,12 +1,12 @@
 package com.algaworks.algafood.infrastructure.service.email;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.algaworks.algafood.domain.service.EnvioEmailService;
@@ -14,8 +14,8 @@ import com.algaworks.algafood.domain.service.EnvioEmailService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
-@Service
-public class SmptEnvioEmailService implements EnvioEmailService{
+
+public class SmtpEnvioEmailService implements EnvioEmailService{
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -24,28 +24,34 @@ public class SmptEnvioEmailService implements EnvioEmailService{
 	private Environment environment;
 	
 	@Autowired
-	private Configuration freemarkerConfig;
+	protected Configuration freemarkerConfig;
 	
 	@Override
 	public void enviar(Mensagem mensagem) {
-		try {
-			String corpo = processarTemplate(mensagem);
-			MimeMessage mimeMessage = mailSender.createMimeMessage();
-			
-			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
-			helper.setFrom(environment.getProperty("algafood.email.remetente"));
-			helper.setTo(mensagem.getDestinatarios().toArray(new String[0]));
-			helper.setSubject(mensagem.getAssunto());
-			helper.setText(corpo, true);
-			
-			mailSender.send(mimeMessage);
-			
-		} catch (Exception e) {
-			throw new EmailException("Não foi possível enviar e-mail", e);
-		}
+	    try {
+	        MimeMessage mimeMessage = criarMimeMessage(mensagem);
+	        
+	        mailSender.send(mimeMessage);
+	    } catch (Exception e) {
+	        throw new EmailException("Não foi possível enviar e-mail", e);
+	    }
 	}
 
-	private String processarTemplate(Mensagem mensagem) {
+	protected MimeMessage criarMimeMessage(Mensagem mensagem) throws MessagingException {
+	    String corpo = processarTemplate(mensagem);
+	    
+	    MimeMessage mimeMessage = mailSender.createMimeMessage();
+	    
+	    MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
+	    helper.setFrom(environment.getProperty("algafood.email.remetente"));
+	    helper.setTo(mensagem.getDestinatarios().toArray(new String[0]));
+	    helper.setSubject(mensagem.getAssunto());
+	    helper.setText(corpo, true);
+	    
+	    return mimeMessage;
+	}
+
+	protected String processarTemplate(Mensagem mensagem) {
 		try {
 			Template template = freemarkerConfig.getTemplate(mensagem.getCorpo());
 			
