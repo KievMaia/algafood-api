@@ -43,6 +43,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+//Permiter requisições de todas as origens, em nível de classe.
+//@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/restaurantes")
 public class RestauranteController {
