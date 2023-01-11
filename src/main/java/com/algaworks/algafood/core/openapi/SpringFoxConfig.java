@@ -32,6 +32,9 @@ public class SpringFoxConfig {
 				.build()
 			.useDefaultResponseMessages(false)
 			.globalResponses(HttpMethod.GET, globalGetResponseMessages())
+			.globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
+			.globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
+			.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
 			.apiInfo(apiInfo())
 			.tags(new Tag("Cidades", "Gerencia cidades"));
 	}
@@ -40,11 +43,15 @@ public class SpringFoxConfig {
 		return Arrays.asList(
 				new ResponseBuilder()
 					.code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
-					.description("Erro interno do servidor")
+					.description("Erro interno do servidor.")
 					.build(),
 				new ResponseBuilder()
 					.code(String.valueOf(HttpStatus.NOT_ACCEPTABLE.value()))
-					.description("Recurso não possui representação que poderia ser aceito pelo consumidor")
+					.description("Recurso não possui representação que poderia ser aceito pelo consumidor.")
+					.build(),
+				new ResponseBuilder()
+					.code(String.valueOf(HttpStatus.NOT_FOUND.value()))
+					.description("Recurso não encontrado.")
 					.build()
 				
 				//Dessa forma para o springfox 2.X.X
@@ -56,6 +63,40 @@ public class SpringFoxConfig {
 //					.code(HttpStatus.NOT_ACCEPTABLE.value())
 //					.message("Recurso não possui representação que poderia ser aceito pelo servidor")
 //					.build()
+				);
+	}
+	
+	private List<Response> globalPostPutResponseMessages(){
+		return Arrays.asList(
+				new ResponseBuilder()
+					.code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+					.description("Erro interno do servidor")
+					.build(),
+				new ResponseBuilder()
+					.code(String.valueOf(HttpStatus.NOT_ACCEPTABLE.value()))
+					.description("Recurso não possui representação que poderia ser aceita pelo consumidor.")
+					.build(),
+				new ResponseBuilder()
+					.code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+					.description("Erro do cliente, verifique a sintaxe da solicitação ou a mensagem de solicitação que pode estar inválida.")
+					.build(),
+				new ResponseBuilder()
+					.code(String.valueOf(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()))
+					.description("Tipo de mídia não suportado. A carga útil está em um formato não suportado por este método.")
+					.build()
+				);
+	}
+	
+	private List<Response> globalDeleteResponseMessages(){
+		return Arrays.asList(
+				new ResponseBuilder()
+					.code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+					.description("Erro interno do servidor")
+					.build(),
+				new ResponseBuilder()
+					.code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+					.description("Erro do cliente, verifique a sintaxe da solicitação ou a mensagem de solicitação que pode estar inválida")
+					.build()
 				);
 	}
 	
