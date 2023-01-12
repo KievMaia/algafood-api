@@ -37,7 +37,7 @@ public interface GrupoControllerOpenApi {
 	})
 	GrupoModel atualizar(
 			@ApiParam(value = "Id de um grupo", example = "1") Long grupoId, 
-			@ApiParam(name = "corpo", value = "Representação de um novo grupo") GrupoInput grupoInput);
+			@ApiParam(name = "corpo", value = "Representação de um grupo com os novos dados") GrupoInput grupoInput);
 
 	@ApiOperation("Exclui um grupo por id.")
 	@ApiResponses({

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.PedidoModelAssembler;
 import com.algaworks.algafood.api.assembler.PedidoResumoModelAssembler;
+import com.algaworks.algafood.api.controller.openapi.PedidoControllerOpenApi;
 import com.algaworks.algafood.api.model.PedidoModel;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.model.input.PedidoInput;
@@ -30,12 +32,9 @@ import com.algaworks.algafood.domain.repository.PedidoRepository;
 import com.algaworks.algafood.domain.service.CadastroPedidoService;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-
 @RestController
-@RequestMapping("/pedidos")
-public class PedidoController {
+@RequestMapping(value = "/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PedidoController implements PedidoControllerOpenApi{
 	
 	@Autowired
 	private PedidoModelAssembler pedidoModelAssembler;
@@ -49,10 +48,6 @@ public class PedidoController {
 	@Autowired
 	private CadastroPedidoService cadastroPedidoService;
 
-	@ApiImplicitParams({
-		@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-				name = "campos", paramType = "query", type = "string")
-	})
 	@GetMapping
 	public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
 		pageable = traduzirPageable(pageable);
@@ -90,10 +85,6 @@ public class PedidoController {
 //		return pedidoResumoModelAssembler.toCollectionModel(pedidoRespository.findAll());
 //	}
 	
-	@ApiImplicitParams({
-		@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-				name = "campos", paramType = "query", type = "string")
-	})
 	@GetMapping("/{codigoPedido}")
 	public PedidoModel buscar(@PathVariable String codigoPedido) {
 		return pedidoModelAssembler.toModel(cadastroPedidoService.buscarOuFalhar(codigoPedido));
