@@ -78,7 +78,7 @@ public class SpringFoxConfig {
                     PedidosResumoModelOpenApi.class))
 			.apiInfo(apiInfo())
 			.tags(new Tag("Cidades", "Gerencia cidades"), 
-				  new Tag("Grupos", "Gerencia grupos"),
+				  new Tag("Grupos", "Gerencia os grupos de usuários"),
 				  new Tag("Cozinhas", "Gerencia cozinhas"),
 				  new Tag("Formas de Pagamento", "Gerencia formas de pagamento"),
 				  new Tag("Pedidos", "Gerencia pedidos"),
@@ -88,8 +88,10 @@ public class SpringFoxConfig {
 				  new Tag("Restaurante Formas de Pagamento", "Gerencia a forma de pagamento do restaurante"),
 				  new Tag("Restaurante Usuário Responsável", "Gerencia os usuários responsáveis pelo restaurante"),
 				  new Tag("Restaurante Produtos", "Gerencia os produtos de um restaurante"),
-				  new Tag("Restaurante Produto Fotos", "Gerencia as fotos dos produtos de um restaurante")
-				  );
+				  new Tag("Restaurante Produto Fotos", "Gerencia as fotos dos produtos de um restaurante"),
+				  new Tag("Usuários", "Gerencia usuários"),
+				  new Tag("Estatísticas", "Estastísticas da AlgaFood")
+				);
 	}
 	
 	private List<Response> globalGetResponseMessages(){
