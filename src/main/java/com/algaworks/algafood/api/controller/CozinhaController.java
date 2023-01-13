@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.CozinhaInputDisassembler;
 import com.algaworks.algafood.api.assembler.CozinhaModelAssembler;
-import com.algaworks.algafood.api.controller.openapi.CozinhaControllerOpenApi;
+import com.algaworks.algafood.api.controller.openapi.controller.CozinhaControllerOpenApi;
 import com.algaworks.algafood.api.model.CozinhaModel;
 import com.algaworks.algafood.api.model.input.CozinhaInput;
 import com.algaworks.algafood.domain.model.Cozinha;

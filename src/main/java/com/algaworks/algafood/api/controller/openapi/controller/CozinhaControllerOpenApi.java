@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.controller.openapi;
+package com.algaworks.algafood.api.controller.openapi.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

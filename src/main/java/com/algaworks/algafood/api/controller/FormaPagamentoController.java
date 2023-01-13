@@ -26,7 +26,7 @@ import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import com.algaworks.algafood.api.assembler.FormaPagamentoInputDisassembler;
 import com.algaworks.algafood.api.assembler.FormaPagamentoModelAssembler;
-import com.algaworks.algafood.api.controller.openapi.FormaPagamentoControllerOpenApi;
+import com.algaworks.algafood.api.controller.openapi.controller.FormaPagamentoControllerOpenApi;
 import com.algaworks.algafood.api.model.FormaPagamentoModel;
 import com.algaworks.algafood.api.model.input.FormaPagamentoInput;
 import com.algaworks.algafood.domain.model.FormaPagamento;
