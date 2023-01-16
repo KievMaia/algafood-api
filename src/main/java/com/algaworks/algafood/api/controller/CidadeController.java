@@ -1,13 +1,12 @@
 package com.algaworks.algafood.api.controller;
 
-import java.net.URI;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,9 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.algaworks.algafood.api.ResourceUriHelper;
 import com.algaworks.algafood.api.assembler.CidadeInputDisassembler;
@@ -59,7 +55,29 @@ public class CidadeController implements CidadeControllerOpenApi{
 	@GetMapping("/{cidadeId}")
 	public CidadeModel buscar(
 		@PathVariable Long cidadeId) {
-		return cidadeModelAssembler.toModel(cadastroCidade.buscarOuFalhar(cidadeId));
+		
+		CidadeModel cidadeModel = cidadeModelAssembler.toModel(cadastroCidade.buscarOuFalhar(cidadeId));
+		
+		cidadeModel.add(linkTo(CidadeController.class)
+				.slash(cidadeModel.getId())
+				.withSelfRel());
+		
+//		cidadeModel.add(Link.of("http://localhost:8080/cidades/1", IanaLinkRelations.SELF));
+//		cidadeModel.add(Link.of("http://localhost:8080/cidades/1"));
+		
+		cidadeModel.add(linkTo(CidadeController.class)
+				.withRel("cidades"));
+		
+//		cidadeModel.add(Link.of("http://localhost:8080/cidades/", IanaLinkRelations.COLLECTION));
+//		cidadeModel.add(Link.of("http://localhost:8080/cidades/", "cidades"));
+		
+		cidadeModel.getEstado().add(linkTo(EstadoController.class)
+				.slash(cidadeModel.getEstado().getId())
+				.withSelfRel());
+		
+//		cidadeModel.getEstado().add(Link.of("http://localhost:8080/estados/1"));
+		
+		return cidadeModel;
 	}
 
 	@PostMapping
