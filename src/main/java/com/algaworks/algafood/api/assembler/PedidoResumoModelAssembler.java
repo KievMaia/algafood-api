@@ -33,6 +33,7 @@ public class PedidoResumoModelAssembler extends RepresentationModelAssemblerSupp
 		
 		modelMapper.map(pedido, pedidoResumoModel);
 		
+		
 		pedidoResumoModel.getRestaurante().add(linkTo(methodOn(RestauranteController.class)
 				.buscar(pedidoResumoModel.getRestaurante().getId())).withSelfRel());
 		
