@@ -9,6 +9,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.algaworks.algafood.api.AlgaLinks;
 import com.algaworks.algafood.api.controller.UsuarioController;
 import com.algaworks.algafood.api.controller.UsuarioGrupoController;
 import com.algaworks.algafood.api.model.UsuarioModel;
@@ -21,6 +22,9 @@ public class UsuarioModelAssembler
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@Autowired
+	private AlgaLinks algaLinks;
+	
 	public UsuarioModelAssembler() {
 		super(UsuarioController.class, UsuarioModel.class);
 	}
@@ -31,7 +35,7 @@ public class UsuarioModelAssembler
 		
 		modelMapper.map(usuario, usuarioModel);
 		
-		usuarioModel.add(linkTo(UsuarioController.class).withRel("usuarios"));
+		usuarioModel.add(algaLinks.linkToUsuarios("usuarios"));
 		
 		usuarioModel.add(linkTo(methodOn(UsuarioGrupoController.class)
 				.listar(usuarioModel.getId())).withRel("grupos-usuario"));
@@ -42,6 +46,6 @@ public class UsuarioModelAssembler
 	@Override
 	public CollectionModel<UsuarioModel> toCollectionModel(Iterable<? extends Usuario> entities) {
 		return super.toCollectionModel(entities)
-				.add(linkTo(UsuarioController.class).withSelfRel());
+				.add(algaLinks.linkToUsuarios());
 	}
 }

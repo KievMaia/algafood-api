@@ -5,7 +5,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
+
 import com.algaworks.algafood.api.exceptionhandler.Problem;
+import com.algaworks.algafood.api.model.RestauranteApenasNomeModel;
+import com.algaworks.algafood.api.model.RestauranteBasicoModel;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 
@@ -25,23 +30,23 @@ public interface RestauranteControllerOpenApi {
 			@ApiImplicitParam(value = "Nome da projeção de pedidos. opção = apenas-nome", allowableValues = "apenas-nome",
 					example = "apenas-nome", name = "projecao", paramType = "query", type = "string")
 	})
-	public List<RestauranteModel> listar();
+	CollectionModel<RestauranteBasicoModel> listar();
 
 	@ApiOperation(value = "Lista restaurantes", hidden = true)
-	public List<RestauranteModel> listarApenasNomes();
+	CollectionModel<RestauranteApenasNomeModel> listarApenasNomes();
 	
 	@ApiOperation("Busca um restaurante por código")
 	   		@ApiResponses({
 	   			@ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class),
 	   			@ApiResponse(code = 400, message = "ID do restaurante inválido", response = Problem.class)
 	   	})
-	public RestauranteModel buscar(@ApiParam(value = "ID de um restaurante", example = "1") Long restauranteId);
+	RestauranteModel buscar(@ApiParam(value = "ID de um restaurante", example = "1") Long restauranteId);
 	
 	@ApiOperation("Cadastra um restaurante")
     @ApiResponses({
         @ApiResponse(code = 201, message = "Restaurante criado"),
     })
-	public RestauranteModel adicionar(
+	RestauranteModel adicionar(
 			@ApiParam(name = "corpo", value = "Representação de um novo restaurante")RestauranteInput restauranteInput);
 
 	@ApiOperation("Atualiza um restaurante por id.")
@@ -49,7 +54,7 @@ public interface RestauranteControllerOpenApi {
 		@ApiResponse(code = 200, message = "Restaurante atualizado"),
 		@ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
 	})
-	public RestauranteModel atualizar(
+	RestauranteModel atualizar(
 			@ApiParam(value = "Id de um restaurante", example = "1") Long restauranteId, 
 			@ApiParam(name = "corpo", value = "Representação de um restaurante com os novos dados") RestauranteInput restauranteInput);
 
@@ -58,7 +63,7 @@ public interface RestauranteControllerOpenApi {
 		@ApiResponse(code = 200, message = "Restaurante atualizado"),
 		@ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
 	})
-	public RestauranteModel atualizarParcial(
+	RestauranteModel atualizarParcial(
 			@ApiParam(value = "Id de um restaurante", example = "1") Long restauranteId, Map<String, Object> campos,
 			HttpServletRequest request);
 	
@@ -66,41 +71,41 @@ public interface RestauranteControllerOpenApi {
 	@ApiResponses({
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-	public void ativar(
+	ResponseEntity<Void> ativar(
 			@ApiParam(value = "Id de um restaurante", example = "1") Long restauranteId);
 	
 	@ApiOperation("Abre um restaurante por id.")
 	@ApiResponses({
 		@ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
 	})
-	public void abrir(
+	ResponseEntity<Void> abrir(
 			@ApiParam(value = "Id de um restaurante", example = "1") Long restauranteId);
 	
 	@ApiOperation("Inativa um restaurante por id.")
 	@ApiResponses({
 		@ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
 	})
-	public void inativar(
+	ResponseEntity<Void> inativar(
 			@ApiParam(value = "Id de um restaurante", example = "1") Long restauranteId);
 	
 	@ApiOperation("Fechar um restaurante por id.")
 	@ApiResponses({
 		@ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
 	})
-	public void fechar(
+	ResponseEntity<Void> fechar(
 			@ApiParam(value = "Id de um restaurante", example = "1") Long restauranteId);
 	
 	@ApiOperation("Ativa restaurantes em lote por uma lista de ids.")
 	@ApiResponses({
 		@ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
 	})
-	public void ativarLote(
+	void ativarLote(
 			@ApiParam(value = "Lista de ids de restaurantes", example = "1,2,3") List<Long> restauranteIds);
 	
 	@ApiOperation("Desativa restaurantes em lote por uma lista de ids.")
 	@ApiResponses({
 		@ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
 	})
-	public void desativarLote(
+	void desativarLote(
 			@ApiParam(value = "Lista de ids de restaurantes", example = "1,2,3") List<Long> restauranteIds);
 }
