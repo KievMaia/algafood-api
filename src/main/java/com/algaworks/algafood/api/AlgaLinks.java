@@ -10,6 +10,7 @@ import org.springframework.hateoas.TemplateVariable.VariableType;
 import org.springframework.hateoas.TemplateVariables;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 
 import com.algaworks.algafood.api.controller.CidadeController;
 import com.algaworks.algafood.api.controller.CozinhaController;
@@ -19,6 +20,7 @@ import com.algaworks.algafood.api.controller.PedidoController;
 import com.algaworks.algafood.api.controller.PedidoStatusController;
 import com.algaworks.algafood.api.controller.RestauranteController;
 import com.algaworks.algafood.api.controller.RestauranteFormaPagamentoController;
+import com.algaworks.algafood.api.controller.RestauranteProdutoFotoController;
 import com.algaworks.algafood.api.controller.RestauranteProdutosController;
 import com.algaworks.algafood.api.controller.RestauranteUsuarioResponsavelController;
 import com.algaworks.algafood.api.controller.UsuarioController;
@@ -140,9 +142,37 @@ public class AlgaLinks {
 		return linkTo(methodOn(CidadeController.class).buscar(cidadeId)).withSelfRel();
 	}
 
+	public Link linkToProduto(Long restauranteId, Long produtoId, String rel) {
+		return linkTo(methodOn(RestauranteProdutosController.class)
+				.buscar(restauranteId, produtoId))
+				.withRel(rel);
+	}
+
 	public Link linkToProduto(Long restauranteId, Long produtoId) {
-		return linkTo(methodOn(RestauranteProdutosController.class).buscar(restauranteId, produtoId))
-				.withRel("produto");
+		return linkToProduto(restauranteId, produtoId, IanaLinkRelations.SELF.value());
+	}
+
+	public Link linkToProdutos(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteProdutosController.class)
+				.listar(restauranteId, null)).withRel(rel);
+	}
+
+	public Link linkToProdutos(Long restauranteId) {
+		return linkToProdutos(restauranteId, IanaLinkRelations.SELF.value());
+	}
+	
+	public Link linkToFotoProduto(Long restauranteId, Long produtoId, String rel) {
+	    return linkTo(methodOn(RestauranteProdutoFotoController.class)
+	            .buscar(restauranteId, produtoId)).withRel(rel);
+	}
+	
+	public Link linkToFotoProdutoDigital(Long restauranteId, Long produtoId, String rel) throws HttpMediaTypeNotAcceptableException {
+	    return linkTo(methodOn(RestauranteProdutoFotoController.class)
+	            .servirFoto(restauranteId, produtoId, "")).withRel(rel);
+	}
+
+	public Link linkToFotoProduto(Long restauranteId, Long produtoId) {
+	    return linkToFotoProduto(restauranteId, produtoId, IanaLinkRelations.SELF.value());
 	}
 
 	public Link linkToCidades(String rel) {
