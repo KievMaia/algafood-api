@@ -90,7 +90,8 @@ public class SpringFoxConfig {
 				  new Tag("Restaurante Produtos", "Gerencia os produtos de um restaurante"),
 				  new Tag("Restaurante Produto Fotos", "Gerencia as fotos dos produtos de um restaurante"),
 				  new Tag("Usuários", "Gerencia usuários"),
-				  new Tag("Estatísticas", "Estastísticas da AlgaFood")
+				  new Tag("Estatísticas", "Estastísticas da AlgaFood"),
+				  new Tag("Permissões", "Gerencia as permissões")
 				);
 	}
 	
