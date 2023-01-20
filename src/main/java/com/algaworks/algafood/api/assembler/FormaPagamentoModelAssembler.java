@@ -1,13 +1,12 @@
 package com.algaworks.algafood.api.assembler;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.algaworks.algafood.api.AlgaLinks;
 import com.algaworks.algafood.api.controller.FormaPagamentoController;
 import com.algaworks.algafood.api.model.FormaPagamentoModel;
 import com.algaworks.algafood.domain.model.FormaPagamento;
@@ -17,6 +16,9 @@ public class FormaPagamentoModelAssembler extends RepresentationModelAssemblerSu
 
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private AlgaLinks algaLinks;
 	
 	public FormaPagamentoModelAssembler() {
 		super(FormaPagamentoController.class, FormaPagamentoModel.class);
@@ -28,14 +30,14 @@ public class FormaPagamentoModelAssembler extends RepresentationModelAssemblerSu
 		
 		modelMapper.map(formaPagamento, formaPagamentoModel);
 		
-		formaPagamentoModel.add(linkTo(FormaPagamentoController.class).withRel("formasPagamento"));
+		formaPagamentoModel.add(algaLinks.linkToFormasPagamento("formasPagamento"));
 		
 		return formaPagamentoModel;
 	}
 	
 	@Override
-	public CollectionModel<FormaPagamentoModel> toCollectionModel(Iterable<? extends FormaPagamento> entities) {
-		return super.toCollectionModel(entities)
-				.add(linkTo(FormaPagamentoController.class).withSelfRel());
-	}
+    public CollectionModel<FormaPagamentoModel> toCollectionModel(Iterable<? extends FormaPagamento> entities) {
+        return super.toCollectionModel(entities)
+            .add(algaLinks.linkToFormasPagamento());
+    } 
 }
