@@ -70,6 +70,16 @@ public class AlgaLinks {
 				.listar(restauranteId)).withRel(rel);
 	}
 	
+	public Link linkToRestauranteFormasPagamentoDesassociacao(Long restauranteId, Long formaPagamentoId, String rel) {
+		return linkTo(methodOn(RestauranteFormaPagamentoController.class)
+				.desassociarFormaPagamento(restauranteId, formaPagamentoId)).withRel(rel);
+	}
+	
+	public Link linkToRestauranteFormasPagamentoAssociacao(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteFormaPagamentoController.class)
+				.asassociar(restauranteId, null)).withRel(rel);
+	}
+	
 	public Link linkToRestauranteFormasPagamento(Long restauranteId) {
 		return linkToRestauranteFormasPagamento(restauranteId, IanaLinkRelations.SELF.value());
 	}
@@ -161,6 +171,16 @@ public class AlgaLinks {
 
 	public Link linkToResponsaveisRestaurante(Long restauranteId) {
 		return linkToResponsaveisRestaurante(restauranteId, IanaLinkRelations.SELF.value());
+	}
+	
+	public Link linkToResponsaveisRestauranteDesassociar(Long restauranteId, Long usuarioId, String rel) {
+		return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+				.desassociarResponsavel(restauranteId, usuarioId)).withRel(rel);
+	}
+	
+	public Link linkToResponsaveisRestauranteAssociar(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+				.asassociarResponsavel(restauranteId, null)).withRel(rel);
 	}
 
 	public Link linkToConfirmacaoPedido(String codigoPedido, String rel) {

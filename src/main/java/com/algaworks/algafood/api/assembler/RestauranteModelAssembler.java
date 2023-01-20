@@ -46,7 +46,7 @@ public class RestauranteModelAssembler extends RepresentationModelAssemblerSuppo
 		}
 		
 		restauranteModel.add(
-				algaLinks.linkToRestauranteFormaPagamento(restauranteModel.getId(), "formas-pagamento"));
+				algaLinks.linkToRestauranteFormasPagamento(restauranteModel.getId(), "formas-pagamento"));
 		
 		restauranteModel.add(
 				algaLinks.linkToResponsaveisRestaurante(restauranteModel.getId(), "responsaveis")
