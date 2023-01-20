@@ -49,10 +49,6 @@ import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-
 //Permiter requisições de todas as origens, em nível de classe.
 //@CrossOrigin("*")
 @RestController
@@ -80,20 +76,12 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 	@Autowired
 	private RestauranteApenasNomeModelAssembler restauranteApenasNomeModelAssembler; 
 	
-	@ApiOperation(value = "Lista restaurantes")
-	@ApiImplicitParams({
-			@ApiImplicitParam(value = "Nome da projeção de pedidos. opção = apenas-nome", allowableValues = "apenas-nome",
-					example = "apenas-nome", name = "projecao", paramType = "query", type = "string")
-	})
-//	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
     public CollectionModel<RestauranteBasicoModel> listar() {
         return restauranteBasicoModelAssembler
                 .toCollectionModel(restauranteRepository.findAll());
     }
 
-	@ApiOperation(value = "Lista restaurantes", hidden = true)
-//	@JsonView(RestauranteView.ApenasNome.class)
 	@GetMapping(params = "projecao=apenas-nome")
     public CollectionModel<RestauranteApenasNomeModel> listarApenasNomes() {
         return restauranteApenasNomeModelAssembler
