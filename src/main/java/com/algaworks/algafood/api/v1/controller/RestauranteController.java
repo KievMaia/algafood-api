@@ -52,7 +52,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 //Permiter requisições de todas as origens, em nível de classe.
 //@CrossOrigin("*")
 @RestController
-@RequestMapping(value = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteController implements RestauranteControllerOpenApi{
 
 	@Autowired

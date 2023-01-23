@@ -13,7 +13,7 @@ import com.algaworks.algafood.api.v1.openapi.controller.PedidoStatusControllerOp
 import com.algaworks.algafood.domain.service.FluxoPedidoService;
 
 @RestController
-@RequestMapping("/pedidos/{codigoPedido}")
+@RequestMapping("/v1/pedidos/{codigoPedido}")
 public class PedidoStatusController implements PedidoStatusControllerOpenApi{
 
 	@Autowired
