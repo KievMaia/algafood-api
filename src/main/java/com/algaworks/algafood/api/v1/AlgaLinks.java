@@ -183,7 +183,7 @@ public class AlgaLinks {
 	}
 
 	public Link linkToCidades(String rel) {
-		return linkTo(methodOn(CidadeController.class).listar()).withRel(rel);
+		return linkTo(CidadeController.class).withRel(rel);
 	}
 
 	public Link linkToCidades() {
