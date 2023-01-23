@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.algaworks.algafood.api.assembler.PedidoInputDisassembler;
-import com.algaworks.algafood.api.model.input.PedidoInput;
+import com.algaworks.algafood.api.v1.assembler.PedidoInputDisassembler;
+import com.algaworks.algafood.api.v1.model.input.PedidoInput;
 import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.FormaPagamento;
