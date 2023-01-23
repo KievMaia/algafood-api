@@ -136,6 +136,16 @@ public class AlgaLinks {
 	public Link linkToUsuarioGrupos(Long usuarioId, String rel) {
 		return linkTo(methodOn(UsuarioGrupoController.class).listar(usuarioId)).withRel(rel);
 	}
+	
+	public Link linkToUsuarioGrupoAssociacao(Long usuarioId, String rel) {
+	    return linkTo(methodOn(UsuarioGrupoController.class)
+	            .associarGrupo(usuarioId, null)).withRel(rel);
+	}
+
+	public Link linkToUsuarioGrupoDesassociacao(Long usuarioId, Long grupoId, String rel) {
+	    return linkTo(methodOn(UsuarioGrupoController.class)
+	            .desassociarGrupo(usuarioId, grupoId)).withRel(rel);
+	} 
 
 	public Link linkToFormaPagamento(Long formaPagamentoId) {
 		return linkTo(methodOn(FormaPagamentoController.class).buscar(formaPagamentoId, null)).withSelfRel();
