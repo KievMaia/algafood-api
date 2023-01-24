@@ -276,7 +276,7 @@ public class SpringFoxConfig {
 	private ApiInfo apiInfoV1() {
 		return new ApiInfoBuilder()
 				.title("Algafood API")
-				.description("API aberta para clientes e restaurantes")
+				.description("<strong>API aberta para clientes e restaurantes</strong>")
 				.version("1")
 				.contact(new Contact("Kiev Maia", "https://www.linkedin.com/in/kievmaia/", "kievmaia@gmail.com"))
 				.build();
@@ -285,7 +285,7 @@ public class SpringFoxConfig {
 	private ApiInfo apiInfoV2() {
 		return new ApiInfoBuilder()
 				.title("Algafood API")
-				.description("API aberta para clientes e restaurantes")
+				.description("<strong>API aberta para clientes e restaurantes</strong>")
 				.version("2")
 				.contact(new Contact("Kiev Maia", "https://www.linkedin.com/in/kievmaia/", "kievmaia@gmail.com"))
 				.build();
