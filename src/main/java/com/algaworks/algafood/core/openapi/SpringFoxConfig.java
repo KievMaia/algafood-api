@@ -46,10 +46,15 @@ import com.algaworks.algafood.api.v1.openapi.model.PermissoesModelOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.ProdutosModelOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.RestauranteBasicoModelDocumentationOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.UsuarioModelOpenApi;
+import com.algaworks.algafood.api.v2.model.CidadeModelV2;
+import com.algaworks.algafood.api.v2.model.CozinhaModelV2;
+import com.algaworks.algafood.api.v2.openapi.model.CidadesModelOpenApiV2;
+import com.algaworks.algafood.api.v2.openapi.model.CozinhasModelOpenApiV2;
 import com.fasterxml.classmate.TypeResolver;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseBuilder;
@@ -66,12 +71,14 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class SpringFoxConfig {
 
 	@Bean
-	public Docket apiDocket() {
+	public Docket apiDocketV1() {
 		TypeResolver typeResolver = new TypeResolver();
 		
 		return new Docket(DocumentationType.OAS_30)
+				.groupName("V1")
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
+				.paths(PathSelectors.ant("/v1/**"))
 				.build()
 			.useDefaultResponseMessages(false)
 			.globalResponses(HttpMethod.GET, globalGetResponseMessages())
@@ -131,7 +138,7 @@ public class SpringFoxConfig {
                     typeResolver.resolve(CollectionModel.class, UsuarioModel.class),
                     UsuarioModelOpenApi.class))
 			
-			.apiInfo(apiInfo())
+			.apiInfo(apiInfoV1())
 			.tags(new Tag("Cidades", "Gerencia cidades"), 
 				  new Tag("Grupos", "Gerencia os grupos de usuários"),
 				  new Tag("Cozinhas", "Gerencia cozinhas"),
@@ -148,6 +155,49 @@ public class SpringFoxConfig {
 				  new Tag("Estatísticas", "Estastísticas da AlgaFood"),
 				  new Tag("Permissões", "Gerencia as permissões")
 				);
+	}
+	
+	@Bean
+	public Docket apiDocketV2() {
+		TypeResolver typeResolver = new TypeResolver();
+		
+		return new Docket(DocumentationType.OAS_30)
+				.groupName("V2")
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
+				.paths(PathSelectors.ant("/v2/**"))
+				.build()
+			.useDefaultResponseMessages(false)
+			.globalResponses(HttpMethod.GET, globalGetResponseMessages())
+			.globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
+			.globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
+			.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
+//			.globalRequestParameters(Collections.singletonList(new RequestParameterBuilder()
+//					.name("campos")
+//					.description("Nomes das propriedades para filtrar na resposta, separados por vírgula")
+//					.in(ParameterType.QUERY)
+//					.required(true)
+//					.query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
+//					.build()))
+			.additionalModels(typeResolver.resolve(Problem.class))
+			.ignoredParameterTypes(ServletWebRequest.class, URL.class, URI.class, URLStreamHandler.class,
+					Resource.class, File.class, InputStream.class, InputStreamResource.class)
+			.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+			.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+			
+			.alternateTypeRules(AlternateTypeRules.newRule(
+                    typeResolver.resolve(CollectionModel.class, CidadeModelV2.class),
+                    CidadesModelOpenApiV2.class))
+			
+			.alternateTypeRules(AlternateTypeRules.newRule(
+					typeResolver.resolve(PagedModel.class, CozinhaModelV2.class),
+					CozinhasModelOpenApiV2.class))
+			
+			.apiInfo(apiInfoV2())
+			
+			.tags(new Tag("Cidades", "Gerencia cidades"),
+					new Tag("Cozinhas", "Gerencia cozinhas"));
+			
 	}
 	
 	private List<Response> globalGetResponseMessages(){
@@ -223,11 +273,20 @@ public class SpringFoxConfig {
 				);
 	}
 	
-	private ApiInfo apiInfo() {
+	private ApiInfo apiInfoV1() {
 		return new ApiInfoBuilder()
 				.title("Algafood API")
 				.description("API aberta para clientes e restaurantes")
 				.version("1")
+				.contact(new Contact("Kiev Maia", "https://www.linkedin.com/in/kievmaia/", "kievmaia@gmail.com"))
+				.build();
+	}
+	
+	private ApiInfo apiInfoV2() {
+		return new ApiInfoBuilder()
+				.title("Algafood API")
+				.description("API aberta para clientes e restaurantes")
+				.version("2")
 				.contact(new Contact("Kiev Maia", "https://www.linkedin.com/in/kievmaia/", "kievmaia@gmail.com"))
 				.build();
 	}
