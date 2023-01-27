@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.v1.assembler.PedidoInputDisassembler;
 import com.algaworks.algafood.api.v1.assembler.PedidoModelAssembler;
 import com.algaworks.algafood.api.v1.assembler.PedidoResumoModelAssembler;
 import com.algaworks.algafood.api.v1.model.PedidoModel;
@@ -27,8 +28,12 @@ import com.algaworks.algafood.api.v1.model.input.PedidoInput;
 import com.algaworks.algafood.api.v1.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.algafood.core.data.PageWrapper;
 import com.algaworks.algafood.core.data.PageableTranslator;
+import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
+import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
 import com.algaworks.algafood.domain.service.CadastroPedidoService;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
@@ -44,6 +49,9 @@ public class PedidoController implements PedidoControllerOpenApi{
 	private PedidoResumoModelAssembler pedidoResumoModelAssembler ;
 	
 	@Autowired
+	private PedidoInputDisassembler pedidoInputDisassembler;
+	
+	@Autowired
 	private PedidoRepository pedidoRepository;
 	
 	@Autowired
@@ -51,6 +59,9 @@ public class PedidoController implements PedidoControllerOpenApi{
 	
 	@Autowired
 	private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
+	
+	@Autowired
+	private AlgaSecurity algaSecurity;
 
 	@GetMapping
 	public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
@@ -96,7 +107,18 @@ public class PedidoController implements PedidoControllerOpenApi{
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public PedidoModel adicionar(@RequestBody @Valid PedidoInput pedidoInput) {
-		return pedidoModelAssembler.toModel(cadastroPedidoService.emitirPedido(pedidoInput));
+		try {
+			Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
+
+			novoPedido.setCliente(new Usuario());
+			novoPedido.getCliente().setId(algaSecurity.getUsuarioId());
+
+			novoPedido = cadastroPedidoService.emitir(novoPedido);
+
+			return pedidoModelAssembler.toModel(novoPedido);
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage(), e);
+		}
 	}
 	
 	//Outra forma de implementação do post (Emitir pedido)
