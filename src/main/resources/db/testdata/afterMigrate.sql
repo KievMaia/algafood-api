@@ -146,7 +146,7 @@ insert into usuario (nome, email, senha, data_cadastro) values
 ('Kiev Maia', 'kievestudo.aw+debora@gmail.com', '$2a$12$fADgVan7kOI.lFgpJVKN0urJnMhb3ciTcTxocofB2ghzMlqwhCdXW', CURRENT_TIMESTAMP::timestamptz),
 ('Carlos Lima', 'kievestudo.aw+carlos@gmail.com', '$2a$12$fADgVan7kOI.lFgpJVKN0urJnMhb3ciTcTxocofB2ghzMlqwhCdXW', CURRENT_TIMESTAMP::timestamptz);
 
-insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1,2), (2, 2), (3, 3), (4,4);
 
 delete from restaurante_usuario_responsavel;
 
