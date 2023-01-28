@@ -106,13 +106,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(AccessDeniedException.class)
 	public ResponseEntity<Object> handleAccessDenied(AccessDeniedException ex, WebRequest request) {
 		HttpStatus status = HttpStatus.FORBIDDEN;
-		ProblemType problemType = ProblemType.NAO_AUTORIZADO;
-		String detail = "O usuário não tem autorização para acessar o recurso. Favor entrar em contato com a gerência.";
+		ProblemType problemType = ProblemType.ACESSO_NEGADO;
+		String detail = ex.getMessage();
 
 		log.error(ex.getMessage(), ex);
 
 		Problem problem = createProblemBuilder(status, problemType, detail)
-				.userMessage(detail).build();
+				.userMessage(detail)
+				.userMessage("Você não possui permissão para executar essa operação")
+				.build();
 
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
