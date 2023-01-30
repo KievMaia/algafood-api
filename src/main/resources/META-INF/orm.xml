@@ -12,5 +12,15 @@
 			AND cozinha.id = :cozinhaId
 		</query>
 	</named-query>
+	
+	<named-query name="Restaurante.existsResponsavel">
+		<query>
+			SELECT case when count(1) > 0 then true else false end
+			FROM Restaurante rest
+			JOIN rest.usuarios resp
+			WHERE rest.id = :restauranteId
+			AND resp.id = :usuarioId
+		</query>
+	</named-query>
 
 </entity-mappings>
