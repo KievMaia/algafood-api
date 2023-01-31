@@ -17,6 +17,7 @@ import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.assembler.UsuarioModelAssembler;
 import com.algaworks.algafood.api.v1.model.UsuarioModel;
 import com.algaworks.algafood.api.v1.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
@@ -34,19 +35,26 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	@Autowired
 	private AlgaLinks algaLinks;
 	
-	@CheckSecurity.Restaurantes.PodeConsultar
+	@Autowired
+	private AlgaSecurity algaSecurity;
+	
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@GetMapping
 	public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 		
 		CollectionModel<UsuarioModel> usuariosResponsaveisModel = usuarioModelAssembler.toCollectionModel(restaurante.getUsuarios())
-				.removeLinks()
-				.add(algaLinks.linkToResponsaveisRestaurante(restaurante.getId()))
-				.add(algaLinks.linkToResponsaveisRestauranteAssociar(restauranteId, "associar"));
+				.removeLinks();
 		
-		usuariosResponsaveisModel.getContent().forEach(usuario -> {
-			usuario.add(algaLinks.linkToResponsaveisRestauranteDesassociar(restauranteId, usuario.getId(), "desassociar"));
-		});
+				usuariosResponsaveisModel.add(algaLinks.linkToResponsaveisRestaurante(restaurante.getId()));
+				
+		if (algaSecurity.podeGerenciarCadastroRestaurantes()) {
+			usuariosResponsaveisModel.add(algaLinks.linkToResponsaveisRestauranteAssociar(restauranteId, "associar"));
+			
+			usuariosResponsaveisModel.getContent().forEach(usuario -> {
+				usuario.add(algaLinks.linkToResponsaveisRestauranteDesassociar(restauranteId, usuario.getId(), "desassociar"));
+			});
+		}
 		
 		return usuariosResponsaveisModel;
 	}
