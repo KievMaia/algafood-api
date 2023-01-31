@@ -90,8 +90,8 @@ insert into permissao (nome, descricao) values ('EDITAR_FORMAS_PAGAMENTO', 'Perm
 insert into permissao (nome, descricao) values ('EDITAR_CIDADES', 'Permite criar ou editar cidades');
 --insert into permissao (nome, descricao) values ('CONSULTAR_ESTADOS', 'Permite consultar estados');
 insert into permissao (nome, descricao) values ('EDITAR_ESTADOS', 'Permite criar ou editar estados');
-insert into permissao (nome, descricao) values ('CONSULTAR_USUARIOS', 'Permite consultar usuários');
-insert into permissao (nome, descricao) values ('EDITAR_USUARIOS', 'Permite criar ou editar usuários');
+insert into permissao (nome, descricao) values ('CONSULTAR_USUARIOS_GRUPOS_PERMISSOES', 'Permite consultar usuários');
+insert into permissao (nome, descricao) values ('EDITAR_USUARIOS_GRUPOS_PERMISSOES', 'Permite criar ou editar usuários');
 --insert into permissao (nome, descricao) values ('CONSULTAR_RESTAURANTES', 'Permite consultar restaurantes');
 insert into permissao (nome, descricao) values ('EDITAR_RESTAURANTES', 'Permite criar, editar ou gerenciar restaurantes');
 --insert into permissao (nome, descricao) values ('CONSULTAR_PRODUTOS', 'Permite consultar produtos');
