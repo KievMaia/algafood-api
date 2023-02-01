@@ -25,7 +25,7 @@ public class NotificacaoClientePedidoConfirmadoListener {
 		if (pedido.getStatus().equals(StatusPedido.CONFIRMADO)) {
 			var mensagem = Mensagem.builder()
 					.assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-					.corpo("pedido-confirmado.html")
+					.corpo("emails/pedido-confirmado.html")
 					.variavel("pedido", pedido)
 					.destinatario(pedido.getCliente().getEmail())
 					.build();
@@ -34,7 +34,7 @@ public class NotificacaoClientePedidoConfirmadoListener {
 		} else if(pedido.getStatus().equals(StatusPedido.CANCELADO)){
 			var mensagem = Mensagem.builder()
 					.assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-					.corpo("pedido-cancelado.html")
+					.corpo("emails/pedido-cancelado.html")
 					.variavel("pedido", pedido)
 					.destinatario(pedido.getCliente().getEmail())
 					.build();
