@@ -60,10 +60,14 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.HttpAuthenticationScheme;
 import springfox.documentation.service.Response;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
@@ -138,6 +142,14 @@ public class SpringFoxConfig {
                     typeResolver.resolve(CollectionModel.class, UsuarioModel.class),
                     UsuarioModelOpenApi.class))
 			
+			//Essa configuração é apenas para as versões springfox < 3 para se autenticar no swagger.
+//			.securitySchemes(Arrays.asList(securityScheme()))
+			
+			//Essa configuração é apenas para as versões springfox > 2 para se autenticar no swagger.
+			.securityContexts(Arrays.asList(securityContext()))
+	        .securitySchemes(List.of(authenticationScheme()))
+	        .securityContexts(List.of(securityContext()))
+			
 			.apiInfo(apiInfoV1())
 			.tags(new Tag("Cidades", "Gerencia cidades"), 
 				  new Tag("Grupos", "Gerencia os grupos de usuários"),
@@ -193,12 +205,54 @@ public class SpringFoxConfig {
 					typeResolver.resolve(PagedModel.class, CozinhaModelV2.class),
 					CozinhasModelOpenApiV2.class))
 			
+			//Essa configuração é apenas para as versões springfox < 3 para se autenticar no swagger.
+//			.securitySchemes(Arrays.asList(securityScheme()))
+			
+			//Essa configuração é apenas para as versões springfox > 2 para se autenticar no swagger.
+			.securityContexts(Arrays.asList(securityContext()))
+	        .securitySchemes(List.of(authenticationScheme()))
+	        .securityContexts(List.of(securityContext()))
+			
 			.apiInfo(apiInfoV2())
 			
 			.tags(new Tag("Cidades", "Gerencia cidades"),
 					new Tag("Cozinhas", "Gerencia cozinhas"));
 			
 	}
+	//Essa configuração é apenas para as versões springfox < 3.
+//	private SecurityScheme securityScheme() {
+//		return new OAuthBuilder()
+//					.name("Algafood")
+//					.grantTypes(grantTypes())
+//					.scopes(scopes())
+//					.build();
+//	}
+//	
+//	private List<GrantType> grantTypes(){
+//		return Arrays.asList(new ResourceOwnerPasswordCredentialsGrant("/oauth/token"));
+//	}
+//	
+//	private List<AuthorizationScope> scopes() {
+//		return Arrays.asList(new AuthorizationScope("READ", "Acesso de leitura"),
+//				new AuthorizationScope("WRITE", "Acesso de escrita"));
+//	}
+	
+	//Já essa configuração é para as versões springfox > 2.
+	private SecurityContext securityContext() {
+		  return SecurityContext.builder()
+		        .securityReferences(securityReference()).build();
+		}
+
+		private List<SecurityReference> securityReference() {
+		  AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+		  AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+		  authorizationScopes[0] = authorizationScope;
+		  return List.of(new SecurityReference("Authorization", authorizationScopes));
+		}
+
+		private HttpAuthenticationScheme authenticationScheme() {
+		  return HttpAuthenticationScheme.JWT_BEARER_BUILDER.name("Authorization").build();
+		}
 	
 	private List<Response> globalGetResponseMessages(){
 		return Arrays.asList(
