@@ -1,4 +1,4 @@
-DROP TABLE pedido;
+DROP TABLE pedido cascade;
 
 create table pedido (
        id  bigserial not null,
