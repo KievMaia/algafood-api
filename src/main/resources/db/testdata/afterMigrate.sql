@@ -47,6 +47,7 @@ delete from pedido;
 delete from item_pedido;
 delete from foto_produto;
 delete from oauth_client_details;
+delete from oauth_code;
 
 ALTER TABLE cidade ENABLE TRIGGER ALL;
 ALTER TABLE cozinha ENABLE TRIGGER ALL;
