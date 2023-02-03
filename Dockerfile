@@ -11,4 +11,4 @@ RUN chmod +x /wait-for-it.sh
 
 EXPOSE 8080
 
-CMD [ "java", "-jar", "api.jar" ]
+CMD ["java", "-jar", "api.jar"]
