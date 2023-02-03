@@ -19,6 +19,7 @@ Preparada para Load Balance (Poor Man).
   <li>Java 11</li>
   <li>Spring Boot</li>
   <li>Spring Data JPA</li>
+  <li>Spring Data Redis</li>
   <li>Spring HATEOAS</li>
   <li>Spring Session</li>
   <li>PostgreSQL</li>
