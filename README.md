@@ -24,6 +24,7 @@ Este é um projeto RESTful API construído usando o Java como linguagem e a fram
   <li>Flyway</li>
   <li>Lombok</li>
   <li>ModelMapper</li>
+  <li>JasperReports</li>
 </ul>
 
 <h2>Configuração do ambiente de desenvolvimento</h2>
