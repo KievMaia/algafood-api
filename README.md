@@ -1,5 +1,6 @@
 # Algafood API
 Este é um projeto RESTful API construído usando o Java como linguagem e a framework Spring para a construção da API. Semelhante ao ifood.
+Preparado para GMT -3.
 
 <h2>Recursos</h2>
 <ul>
