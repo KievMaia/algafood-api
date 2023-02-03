@@ -1,6 +1,7 @@
 # Algafood API
 Este é um projeto RESTful API construído usando o Java como linguagem e a framework Spring para a construção da API. Semelhante ao ifood.
-Preparado para GMT -3.
+Preparada para GMT -3.
+Preparada para Load Balance (Poor Man).
 
 <h2>Recursos</h2>
 <ul>
@@ -19,6 +20,7 @@ Preparado para GMT -3.
   <li>Spring Boot</li>
   <li>Spring Data JPA</li>
   <li>Spring HATEOAS</li>
+  <li>Spring Session</li>
   <li>PostgreSQL</li>
   <li>OAuth2 com JWT</li>
   <li>Springfox 3 - Swagger UI</li>
