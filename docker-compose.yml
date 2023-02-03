@@ -13,6 +13,11 @@ services:
       - "5432:5432"
     networks:
       - algafood-network
+      
+  algafood-redis:
+    image: redis:7.0.8-alpine
+    networks:
+      - algafood-network
    
   algafood-api:
     image: algafood-api
