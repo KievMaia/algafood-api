@@ -38,7 +38,7 @@ Preparada para Load Balance (Poor Man).
 </ol>
 
 <h2>Documentação da API</h2>
-A documentação da API pode ser acessada em http://localhost:8080/swagger-ui/index.html ao rodar a aplicação localmente.
+A documentação da API pode ser acessada em http://localhost/swagger-ui/index.html ao rodar a aplicação localmente.
 
 <h2>Contribuição</h2>
 Contribuições são sempre bem-vindas! Sinta-se livre para abrir uma issue ou enviar um pull request.
