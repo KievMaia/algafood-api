@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
+      - "15432:5432"
     networks:
       - algafood-network
       
@@ -26,6 +26,7 @@ services:
       DB_HOST: algafood-postgres
       SPRING_SESSION_STORE_TYPE: redis
       SPRING_REDIS_HOST: algafood-redis
+      SPRING_PROFILES_ACTIVE: development
     networks:
       - algafood-network
     depends_on:
