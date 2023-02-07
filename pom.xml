@@ -20,10 +20,8 @@
 		<aws-java-sdk-s3.version>1.12.336</aws-java-sdk-s3.version>
 		<spring-fox.version>3.0.0</spring-fox.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
-		<oauth2-oidc-sdk.version>6.21.2</oauth2-oidc-sdk.version>
-		<spring-security-oauth2.version>2.3.8.RELEASE</spring-security-oauth2.version>
-		<spring-security-jwt.version>1.0.11.RELEASE</spring-security-jwt.version>
 		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
+		<springauthserver.version>0.3.1</springauthserver.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -130,6 +128,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-authorization-server</artifactId>
+			<version>${springauthserver.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
@@ -137,24 +142,9 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.nimbusds</groupId>
-			<artifactId>oauth2-oidc-sdk</artifactId>
-			<version>${oauth2-oidc-sdk.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-jwt</artifactId>
-			<version>${spring-security-jwt.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.security.oauth</groupId>
-			<artifactId>spring-security-oauth2</artifactId>
-			<version>${spring-security-oauth2.version}</version>
+			<artifactId>
+				spring-boot-starter-oauth2-resource-server
+			</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
