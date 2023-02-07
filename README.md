@@ -35,6 +35,8 @@ Preparada para Load Balance (Poor Man).
 <ol>
   <li>Instale o Docker e o Docker Compose em seu ambiente.</li>
   <li>Clone este repositório em sua máquina local.</li>
+  <li>Se estiver utilizando Windows, alterar o separador de linha do arquivo wait-for-it.sh na raiz do projeto para LF.
+ Buildar a imagem apagando os caches caso tenha com o seguinte comando: docker build -t algafood --no-cache --build-arg JAR_FILE=algafood-api-0.0.1-SNAPSHOT.jar . </li>
   <li>Execute o comando ./mvnw clean package -Pdocker para buildar o projeto.
   <li>Execute o comando docker-compose up na pasta raiz do projeto para construir o ambiente e iniciar a aplicação. OU o comando docker-compose up --scale algafood-api=[numero_de_containers] para escalar a aplicação com quantos containers desejar, pois o projeto está preparado para Load Balance (Poor man).</li>
 </ol>
