@@ -146,26 +146,22 @@ public class AuthorizationServerConfig {
 	}
 	
 	@Bean
-	public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer(UsuarioRepository usuarioRepository) {
-		return context -> {
-			Authentication authentication = context.getPrincipal();
-			
-			if (authentication.getPrincipal() instanceof User) {
-				User user = (User) authentication.getPrincipal();
-				
-				Usuario usuario = usuarioRepository.findByEmail(user.getUsername()).orElseThrow();
-				
-				Set<String> authorities = new HashSet<>();
-				
-				for (GrantedAuthority authority : user.getAuthorities()) {
-					authorities.add(authority.getAuthority());
-				}
-				
-				context.getClaims()
-						.claim("usuario_id", usuario.getId().toString());
-				context.getClaims()
-						.claim("authorities", authorities);
-			}
-		};
-	}
+    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer(UsuarioRepository usuarioRepository) {
+        return context -> {
+            Authentication authentication = context.getPrincipal();
+            if (authentication.getPrincipal() instanceof User) {
+                User user = (User) authentication.getPrincipal();
+
+                Usuario usuario = usuarioRepository.findByEmail(user.getUsername()).orElseThrow();
+
+                Set<String> authorities = new HashSet<>();
+                for (GrantedAuthority authority : user.getAuthorities()) {
+                    authorities.add(authority.getAuthority());
+                }
+
+                context.getClaims().claim("usuario_id", usuario.getId());
+                context.getClaims().claim("authorities", authorities);
+            }
+        };
+    }
 }
