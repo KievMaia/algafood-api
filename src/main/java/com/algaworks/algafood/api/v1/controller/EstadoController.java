@@ -42,6 +42,7 @@ public class EstadoController implements EstadoControllerOpenApi{
 	@Autowired
 	EstadoInputDisassembler estadoInputDisassembler;
 
+	@CheckSecurity.Estados.PodeConsultar
 	@GetMapping
 	public CollectionModel<EstadoModel> listar() {
 		return estadoModelAssembler.toCollectionModel(estadoRepository.findAll());
