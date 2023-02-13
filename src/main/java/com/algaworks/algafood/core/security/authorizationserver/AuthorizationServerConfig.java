@@ -126,4 +126,9 @@ public class AuthorizationServerConfig {
 	public OAuth2AuthorizationConsentService consentService(JdbcOperations jdbcOperations, RegisteredClientRepository clientRepository) {
 		return new JdbcOAuth2AuthorizationConsentService(jdbcOperations, clientRepository);
 	}
+	
+	@Bean
+	public OAuth2AuthorizationQueryService auth2AuthorizationQueryService(JdbcOperations jdbcOperations) {
+		return new JdbcOAuth2AuthorizationQueryService(jdbcOperations);
+	}
 }
