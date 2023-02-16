@@ -5,8 +5,6 @@ import java.security.KeyStore;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -42,67 +40,67 @@ import com.nimbusds.jose.proc.SecurityContext;
 @Configuration
 public class AuthorizationServerConfig {
 
-	@Bean
-	@Order(Ordered.HIGHEST_PRECEDENCE)
-	public SecurityFilterChain authFiltterChain(HttpSecurity http) throws Exception {
-//		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-		
-		OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer =
-				new OAuth2AuthorizationServerConfigurer<>();
-		
-		authorizationServerConfigurer.authorizationEndpoint(
-				customizer -> customizer.consentPage("/oauth2/consent"));
-		
-		RequestMatcher endpointsMatcher = authorizationServerConfigurer
-				.getEndpointsMatcher();
-		
-		http.requestMatcher(endpointsMatcher)
-			.authorizeRequests(authorizeRequests ->
-				authorizeRequests.anyRequest().authenticated()
-			)
-			.csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
-			.apply(authorizationServerConfigurer);
-		
-		return http
-				.formLogin(customizer -> customizer.loginPage("/login"))
-				.build();
-	}
-	
-	@Bean
-	public ProviderSettings providerSettings(AlgaFoodSecurityProperties properties) {
-		return ProviderSettings.builder()
-				.issuer(properties.getProviderUrl())
-				.build();
-	}
-	
-	@Bean
-	public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder, JdbcOperations jdbcOperations) {
-		
-		return new JdbcRegisteredClientRepository(jdbcOperations);
-	}
-	
-	@Bean
-	public OAuth2AuthorizationService auth2AuthorizationService(JdbcOperations jdbcOperations, RegisteredClientRepository registeredClientRepository) {
-		return new JdbcOAuth2AuthorizationService(jdbcOperations, registeredClientRepository);
-	}
-	
-	@Bean
-	public JWKSource<SecurityContext> jwkSource(JwtKeyStoreProperties properties) throws Exception {
-		char[] keyStorePass = properties.getPassword().toCharArray();
-		String keypairAlias = properties.getKeypairAlias();
-		
-		@NotNull
-		Resource jksLocation = properties.getJksLocation();
-		InputStream inputStream = jksLocation.getInputStream();
-		KeyStore keyStore = KeyStore.getInstance("JKS");
-		keyStore.load(inputStream, keyStorePass);
-		
-		RSAKey rsaKey = RSAKey.load(keyStore, keypairAlias, keyStorePass);
-		
-		return new ImmutableJWKSet<>(new JWKSet(rsaKey));
-	}
-	
-	@Bean
+    @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
+//        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+        OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer =
+                new OAuth2AuthorizationServerConfigurer<>();
+
+        authorizationServerConfigurer.authorizationEndpoint(
+                customizer -> customizer.consentPage("/oauth2/consent"));
+
+        RequestMatcher endpointsMatcher = authorizationServerConfigurer
+                .getEndpointsMatcher();
+
+        http.requestMatcher(endpointsMatcher)
+            .authorizeRequests(authorizeRequests ->
+                    authorizeRequests.anyRequest().authenticated()
+            )
+            .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
+            .apply(authorizationServerConfigurer);
+
+        return http.formLogin(customizer -> customizer.loginPage("/login")).build();
+    }
+
+    @Bean
+    public ProviderSettings providerSettings(AlgaFoodSecurityProperties properties) {
+        return ProviderSettings.builder()
+                .issuer(properties.getProviderUrl())
+                .build();
+    }
+
+    @Bean
+    public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder,
+                                                                 JdbcOperations jdbcOperations) {
+        return new JdbcRegisteredClientRepository(jdbcOperations);
+    }
+
+    @Bean
+    public OAuth2AuthorizationService oAuth2AuthorizationService(JdbcOperations jdbcOperations,
+                                                                 RegisteredClientRepository registeredClientRepository) {
+        return new JdbcOAuth2AuthorizationService(
+                jdbcOperations,
+                registeredClientRepository
+        );
+    }
+
+    @Bean
+    public JWKSource<SecurityContext> jwkSource(JwtKeyStoreProperties properties) throws Exception {
+        char[] keyStorePass = properties.getPassword().toCharArray();
+        String keypairAlias = properties.getKeypairAlias();
+
+        Resource jksLocation = properties.getJksLocation();
+        InputStream inputStream = jksLocation.getInputStream();
+        KeyStore keyStore = KeyStore.getInstance("JKS");
+        keyStore.load(inputStream, keyStorePass);
+
+        RSAKey rsaKey = RSAKey.load(keyStore, keypairAlias, keyStorePass);
+
+        return new ImmutableJWKSet<>(new JWKSet(rsaKey));
+    }
+
+    @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer(UsuarioRepository usuarioRepository) {
         return context -> {
             Authentication authentication = context.getPrincipal();
@@ -121,14 +119,17 @@ public class AuthorizationServerConfig {
             }
         };
     }
-	
-	@Bean
-	public OAuth2AuthorizationConsentService consentService(JdbcOperations jdbcOperations, RegisteredClientRepository clientRepository) {
-		return new JdbcOAuth2AuthorizationConsentService(jdbcOperations, clientRepository);
-	}
-	
-	@Bean
-	public OAuth2AuthorizationQueryService auth2AuthorizationQueryService(JdbcOperations jdbcOperations) {
-		return new JdbcOAuth2AuthorizationQueryService(jdbcOperations);
-	}
+
+    @Bean
+    public OAuth2AuthorizationConsentService consentService(JdbcOperations jdbcOperations,
+                                                            RegisteredClientRepository clientRepository) {
+        return new JdbcOAuth2AuthorizationConsentService(jdbcOperations, clientRepository);
+    }
+
+    @Bean
+    public OAuth2AuthorizationQueryService auth2AuthorizationQueryService(JdbcOperations jdbcOperations,
+                                                                          RegisteredClientRepository repository) {
+        return new JdbcOAuth2AuthorizationQueryService(jdbcOperations, repository);
+    }
+
 }
