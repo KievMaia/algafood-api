@@ -52,5 +52,5 @@ URL de autenticação usando Password Flow: http://localhost/oauth/token
 <h2>Contribuição</h2>
 Contribuições são sempre bem-vindas! Sinta-se livre para abrir uma issue ou enviar um pull request.
 
-Em caso de dúvidas, sinta-se a entrar em contato, me mande mensagem através do meu linkedin:
+Em caso de dúvidas, sinta-se a vontade a entrar em contato, me mande mensagem através do meu linkedin:
 https://www.linkedin.com/in/kievmaia/
